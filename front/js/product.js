@@ -3,15 +3,14 @@ let name = document.getElementById("title");
 let prix = document.getElementById("price");
 let description = document.getElementById("description");
 let colors = document.getElementById("colors");
-
-
+const inputQuantite = document.querySelector('input[type = "number"]');
+let quantite = "";
 
 function getProduct() {
-
   const id = getIdFromParam();
-  console.log(id);
+  //   console.log(id);
   if (!id) {
-    console.log("no id found in paramerers");
+    console.log("no id found in parameters");
     return;
   }
 
@@ -31,6 +30,9 @@ function getProduct() {
       itemImage.appendChild(imageNode);
       name.textContent = kanape.name;
       prix.textContent = kanape.price;
+      inputQuantite.addEventListener("input", (e) => {
+        quantite = e.target.value; /*pour récupérer le contenu de l'input*/
+      });
       description.textContent = kanape.description;
       kanape.colors.forEach((color) => {
         // on crée l'option a partir de la couleur
@@ -45,12 +47,9 @@ function getProduct() {
 
 getProduct();
 
-
-
-function getIdFromParam(){
-/**Récuuper get parameteres **/
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-return urlParams.get("id");
-
+function getIdFromParam() {
+  /**Récuuper get parameteres **/
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  return urlParams.get("id");
 }
