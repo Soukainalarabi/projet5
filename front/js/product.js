@@ -4,7 +4,9 @@ let prix = document.getElementById("price");
 let description = document.getElementById("description");
 let colors = document.getElementById("colors");
 const inputQuantite = document.querySelector('input[type = "number"]');
+// let card = document.getElementById("addToCart");
 let quantite = "";
+let product;
 
 function getProduct() {
   const id = getIdFromParam();
@@ -30,9 +32,6 @@ function getProduct() {
       itemImage.appendChild(imageNode);
       name.textContent = kanape.name;
       prix.textContent = kanape.price;
-      inputQuantite.addEventListener("input", (e) => {
-        quantite = e.target.value; /*pour récupérer le contenu de l'input*/
-      });
       description.textContent = kanape.description;
       kanape.colors.forEach((color) => {
         // on crée l'option a partir de la couleur
@@ -41,9 +40,29 @@ function getProduct() {
         option.value = color;
         // on attache l'option créer avec Select colors element
         colors.appendChild(option);
+        product = kanape;
       });
     });
+  // const init2 = {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     // contact:{}
+  //     // produits:[]
+  //   }),
+  //   mode: "cors",
+  //   Credential: "same-origin",
+  // };
+  document.querySelector("#addToCart").addEventListener("click", () => {
+    const qty = inputQuantite.value;
+    const valeurCouleur = colors.value;
+    console.log(product);
+  });
 }
+
+function clickEvent() {}
 
 getProduct();
 
