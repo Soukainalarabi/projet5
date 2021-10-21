@@ -25,6 +25,10 @@ function achatproduit() {
 ///recuperer les cookies///
 res = getCookie("panier");
 let panier = JSON.parse(res ? res : "[]");
+let total = 0;
+let totalQte = 0;
+// total = achat.quantite * achat.produit.price;
+console.log(panier.length);
 panier.forEach((achat) => {
   let cart__items = document.getElementById("cart__items");
   let article = document.createElement("article");
@@ -77,22 +81,25 @@ panier.forEach((achat) => {
   textDelete.setAttribute("class", "deleteItem");
   delet.appendChild(textDelete);
   cart__items.appendChild(article);
-  // let a = document.createElement("a");
-  // a.href = "./produit.html?id=" + kn._id;
-  // let article = document.createElement("article");
-  // let img = document.createElement("img");
-  // let h3 = document.createElement("h3");
-  // let p = document.createElement("p");
 
-  // img.src = kn.imageUrl;
-  // img.alt = kn.altTxt;
-  // h3.textContent = kn.name;
-  // p.textContent = kn.description;
-  // article.appendChild(img);
-  // article.appendChild(h3);
-  // article.appendChild(p);
-  // a.appendChild(article);
-  // items.appendChild(a);
+  // let totalQuantite = createImageBitmap("div");
+  // total.Quantite.setAttribute("class", "cart__price");
+  // let pTotalQuantite = createElement("p");
+  // pTotalQuantite.setAttribute("span");
+  // totalQuantite.appendChild(totalQuantite);
+  // const reducer = (previousValue, currentValue) =>
+  //   previousValue + currentValue;
+  // const totalPanier = valeur.reduce(reducer);
+  // let quantiteArticle = achat.quantite;
+  let valeur = achat.quantite * achat.produit.price;
+  total += valeur;
+  totalQte += parseInt(achat.quantite);
+  console.log(totalQte);
+  let totalQuantity = document.getElementById("totalQuantity");
+  totalQuantity.textContent = totalQte;
+  let totalPrice = document.getElementById("totalPrice");
+  totalPrice.textContent = total;
+
 });
 
 //validation formulaire
