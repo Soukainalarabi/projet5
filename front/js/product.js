@@ -4,7 +4,7 @@ let prix = document.getElementById("price");
 let description = document.getElementById("description");
 let colors = document.getElementById("colors");
 const inputQuantite = document.querySelector('input[type = "number"]');
-// let card = document.getElementById("addToCart");
+let card = document.getElementById("addToCart");
 let quantite = "";
 let product;
 
@@ -34,7 +34,7 @@ function getProduct() {
       prix.textContent = kanape.price;
       description.textContent = kanape.description;
       kanape.colors.forEach((color) => {
-        // on crée l'option a partir de la couleur
+        // on crée l'option à partir de la couleur
         let option = document.createElement("option");
         option.textContent = color;
         option.value = color;
@@ -43,26 +43,21 @@ function getProduct() {
         product = kanape;
       });
     });
-  // const init2 = {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     // contact:{}
-  //     // produits:[]
-  //   }),
-  //   mode: "cors",
-  //   Credential: "same-origin",
-  // };
-  document.querySelector("#addToCart").addEventListener("click", () => {
+
+  card.addEventListener("click", (e) => {
     const qty = inputQuantite.value;
     const valeurCouleur = colors.value;
-    console.log(product);
+    res = getCookie("panier");
+    let panier = JSON.parse(res ? res : "[]");
+    let achat = {
+      quantite: qty,
+      couleur: valeurCouleur,
+      produit: product,
+    };
+    panier.push(achat);
+    setCookie("panier", JSON.stringify(panier), 10);
   });
 }
-
-function clickEvent() {}
 
 getProduct();
 
@@ -72,3 +67,28 @@ function getIdFromParam() {
   const urlParams = new URLSearchParams(queryString);
   return urlParams.get("id");
 }
+/**
+ * recuperer coockies
+ * @param {*} cName   le nom du coockie
+ * @returns  retourenr la valeur du coc
+ */
+
+class Panier {
+  constructor() {
+    let res = getCookie("panier");
+    let panier = res ? JSON.parse(res) : undefined;
+    this.achats = panier ? panier.achats : [];
+    this.total = panier ? panier.total : 0;
+  }
+  ajouterProduit(couleur, quantite, produit) {}
+  supprimerProduit(couleur, quantite, produit) {
+    setCookie(nom, "", -1);
+  }
+
+  viderPanier() {
+    this.achats = [];
+    this.total = 0;
+  }
+}
+getCookie();
+setCookie();
