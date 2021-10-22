@@ -49,13 +49,22 @@ function getProduct() {
     const valeurCouleur = colors.value;
     res = getCookie("panier");
     let panier = JSON.parse(res ? res : "[]");
-    let achat = {
-      quantite: qty,
-      couleur: valeurCouleur,
-      produit: product,
-    };
-    panier.push(achat);
+    let achatTrouve = panier.find(
+      (a) => a.produit._id == product._id && a.couleur == valeurCouleur
+    );
+    if (!achatTrouve) {
+      //si achatTrouve est vide
+      let achat = {
+        quantite: parseInt(qty),
+        couleur: valeurCouleur,
+        produit: product,
+      };
+      panier.push(achat);
+    } else {
+      achatTrouve.quantite += parseInt(qty);
+    }
     setCookie("panier", JSON.stringify(panier), 10);
+    window.location = "index.html";
   });
 }
 
