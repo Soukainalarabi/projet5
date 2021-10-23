@@ -164,10 +164,49 @@ function ValidationFirstName(e) {
     errMsgLast.textContent = "";
   }
 }
+
+let nameFirst = document.querySelector("input#firstName");
+let nameLast = document.querySelector("input#lastName");
+let adresse = document.querySelector("input#address");
+let city = document.querySelector("input#city");
+let email = document.querySelector("input#email");
+
+function send(e) {
+  e.preventDefault();
+  // on charge le panier a partir du coockie
+  ///recuperer les cookies///
+  res = getCookie("panier");
+  let panier = JSON.parse(res ? res : "[]");
+  fetch("http://localhost:3000/api/products/order", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      contact: {
+        firstName: nameFirst.value,
+        lastName: nameLast.value,
+        address: adresse.value,
+        city: city.value,
+        email: email.value,
+      },
+      products: panier.map((a) => a.produit._id),
+    }),
+  })
+    .then((res) => res.json())
+    .then((order) => {
+      console.log(order);
+      setCookie("panier", []);
+      window.location = "confirmation.html?orderId=" + order.orderId;
+    });
+}
+
 let form = document.querySelector(".cart__order__form");
 form.addEventListener("submit", (e) => {
   ValidationMail(e);
   ValidationFirstName(e);
+  send(e);
 });
 
 function deleteCookie(e, panier) {
