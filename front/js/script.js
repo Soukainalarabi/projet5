@@ -1,15 +1,8 @@
 const items = document.getElementById("items");
-// console.log(arr);
 function products() {
   fetch("http://localhost:3000/api/products/")
     .then((res) => res.json())
     .then((kanapes) => {
-      //   for (i = 0; i < kanapes.length; i++) {
-      //     console.log(kanapes[i].name);
-      //   }
-      //   for (index in kanapes) {
-      //     console.log("name2: " + kanapes[index].name);
-      //   }
       kanapes.forEach((kn) => {
         let a = document.createElement("a");
         a.href = "./product.html?id=" + kn._id;
@@ -31,9 +24,3 @@ function products() {
     });
 }
 products();
-// function detailProduct() {
-//   fetch("http://localhost:3000/api/products/_id").then((res) => res.json());
-// }
-
-// detailProduct();
-

@@ -43,11 +43,10 @@ function getProduct() {
         product = kanape;
       });
     });
-
   card.addEventListener("click", (e) => {
     const qty = inputQuantite.value;
     const valeurCouleur = colors.value;
-    res = getCookie("panier");
+    res = localStorage.panier;
     let panier = JSON.parse(res ? res : "[]");
     let achatTrouve = panier.find(
       (a) => a.produit._id == product._id && a.couleur == valeurCouleur
@@ -63,7 +62,8 @@ function getProduct() {
     } else {
       achatTrouve.quantite += parseInt(qty);
     }
-    setCookie("panier", JSON.stringify(panier), 10);
+    localStorage.panier = JSON.stringify(panier);
+
     window.location = "index.html";
   });
 }
@@ -76,28 +76,3 @@ function getIdFromParam() {
   const urlParams = new URLSearchParams(queryString);
   return urlParams.get("id");
 }
-/**
- * recuperer coockies
- * @param {*} cName   le nom du coockie
- * @returns  retourenr la valeur du coc
- */
-
-class Panier {
-  constructor() {
-    let res = getCookie("panier");
-    let panier = res ? JSON.parse(res) : undefined;
-    this.achats = panier ? panier.achats : [];
-    this.total = panier ? panier.total : 0;
-  }
-  ajouterProduit(couleur, quantite, produit) {}
-  supprimerProduit(couleur, quantite, produit) {
-    setCookie(nom, "", -1);
-  }
-
-  viderPanier() {
-    this.achats = [];
-    this.total = 0;
-  }
-}
-getCookie();
-setCookie();
