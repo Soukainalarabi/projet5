@@ -126,32 +126,36 @@ function initialiserPanier() {
 function ValidationMail(e) {
   var regex1 =
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  let isValid = true;
+
   var mail = document.getElementById("email").value;
 
   if (regex1.test(mail)) {
     errMsg.textContent = "";
   } else {
     errMsg.textContent = "Adresse mail non valide";
-    //e.preventDefault(): bloquer l'envoie si le mail n'est pas validé
-    e.preventDefault();
+    isValid = false;
   }
+  return isValid;
 }
 function ValidationFirstName(e) {
   let regex2 = /^[A-Za-z]+$/;
+  let isValid = true;
   let nameForm = document.getElementById("firstName").value;
   let nameLastForm = document.getElementById("lastName").value;
   if (!regex2.test(nameForm)) {
     errMsgFirst.textContent = "Prénom non valide";
-    e.preventDefault();
+    isValid = false;
   } else {
     errMsgFirst.textContent = "";
   }
   if (!regex2.test(nameLastForm)) {
     errMsgLast.textContent = "Nom non valide";
-    e.preventDefault();
+    isValid = false;
   } else {
     errMsgLast.textContent = "";
   }
+  return isValid;
 }
 
 let nameFirst = document.querySelector("input#firstName");
@@ -161,8 +165,6 @@ let city = document.querySelector("input#city");
 let email = document.querySelector("input#email");
 
 function send(e) {
-  e.preventDefault();
-
   res = localStorage.panier;
   let panier = JSON.parse(res ? res : "[]");
   fetch("http://localhost:3000/api/products/order", {
@@ -192,9 +194,18 @@ function send(e) {
 
 let form = document.querySelector(".cart__order__form");
 form.addEventListener("submit", (e) => {
-  ValidationMail(e);
-  ValidationFirstName(e);
-  send(e);
+  e.preventDefault();
+  res = localStorage.panier;
+  let panier = JSON.parse(res ? res : "[]");
+  let isMailValid = ValidationMail(e);
+  let isNameValid = ValidationFirstName(e);
+  if (panier.length == 0) {
+    alert("Veuillez remplir votre panier");
+  }
+  //si le contenu du formulaire est valide et le panier n'est pas vide la commande sera envoyer
+  if (isMailValid && isNameValid && panier.length != 0) {
+    send(e);
+  }
 });
 
 function removeArticle(e, panier) {
