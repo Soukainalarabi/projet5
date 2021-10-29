@@ -222,3 +222,5 @@ function removeArticle(e, panier) {
 
 //code execution here:
 initialiserPanier();
+let a = 0;
+console.log(a);
