@@ -72,6 +72,11 @@ function afficherProduit() {
       //sinon on modifie l'article existant en ajoutant la quantité saisie
       articleTrouve.quantite += parseInt(qty);
     }
+    ///choisir une quantité et une couleur
+    if (qty == 0 || !valeurCouleur) {
+      alert("veuillez définir la quantité  et la couleur");
+      return;
+    }
     //Enregistrer le panier dans localStroage
     localStorage.panier = JSON.stringify(panier);
     // on se redirige vers la page d'accueil
