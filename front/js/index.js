@@ -1,3 +1,4 @@
+////on récupère la section a partir du DOM et on va injecter dans cette section la liste des produits qu'on a récupéré a partir de l API
 const contentProducts = document.querySelector("section");
 ///Récupérer tous les produits///
 async function afficherProduits() {

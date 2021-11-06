@@ -8,18 +8,9 @@ const quantite = document.querySelector(
 const errMsg = document.querySelector("#emailErrorMsg");
 const errMsgFirst = document.querySelector("#firstNameErrorMsg");
 const errMsgLast = document.querySelector("#lastNameErrorMsg");
-function achatproduit() {
-  fetch("http://localhost:3000/api/produits")
-    .then((res) => res.json())
-    .then((kanape) => {
-      let imageNode = document.createElement("img");
-      imageNode.src = kanape.imageUrl;
-      imageNode.alt = imageNode.altTxt;
-      image.appendChild(imageNode);
-    });
-}
+
 function initialiserPanier() {
-  ///recuperer les cookies///
+  ///recuperer les elements grace a localeStorage///
   res = localStorage.panier;
   let panier = JSON.parse(res ? res : "[]");
   let total = 0;
@@ -33,9 +24,7 @@ function initialiserPanier() {
  </div>
 <div class="cart__item__content">
   <div class="cart__item__content__titlePrice">
-    <h2>${article.produit.name}</h2>
-    <h3>${article.couleur}</h3>
-
+    <h2>${article.produit.name} (${article.couleur})</h2>
     <p>${article.produit.price} €</p>
   </div>
   <div class="cart__item__content__settings">
@@ -57,13 +46,14 @@ function initialiserPanier() {
     let totalPrice = document.getElementById("totalPrice");
     totalPrice.textContent = total;
   });
+  ////ici on a fait "querySelectorAll" au lieu de querySelector parce qu'on veut retourner tous les éléments satisfaisant au sélecteur pas juste le premier élément trouvé
   const inputQty = document.querySelectorAll(".itemQuantity");
   inputQty.forEach((input) => {
     input.addEventListener("change", (e) => {
       total = 0;
       // on récupère la nouvelle valeur quanité
       let newQtyValue = e.target.value;
-      // on récupère l'article  ou le qantité à été changé
+      // on récupère l'article  ou la qantité à été changé
       let articleBalise = e.target.closest(".cart__item");
       let idProduit = articleBalise.getAttribute("data-id");
       let couleurChoisi = articleBalise.getAttribute("data-couleur");
@@ -83,8 +73,10 @@ function initialiserPanier() {
   });
   /////Supprimer un article à partir du panier
   const deleteBtns = document.querySelectorAll(".deleteItem");
+
   deleteBtns.forEach((deleteBtn) => {
     deleteBtn.addEventListener("click", (e) => {
+      //voir la fonction au dessous
       removeArticle(e, panier);
     });
   });
@@ -181,7 +173,7 @@ function removeArticle(e, panier) {
   let id = articleBalise.getAttribute("data-id");
   let couleurChoisi = articleBalise.getAttribute("data-couleur");
 
-  //on filtre que les produits qui n'ont pas la meme couleur ou   qui n'ont pas le meme id. c'est a dire on supprime les produits qui ont le meme id et la meme couleur.
+  //on filtre que les produits qui n'ont pas la meme couleur ou qui n'ont pas le meme id (on supprime les produits qui ont le meme id et la meme couleur).
   panierFiltre = panier.filter(
     (achat) => achat.produit._id != id || achat.couleur != couleurChoisi
   );

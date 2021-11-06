@@ -7,11 +7,11 @@ const inputQuantite = document.querySelector('input[type = "number"]');
 let card = document.getElementById("addToCart");
 let quantite = "";
 let product;
-
+///on récupère la valeur de l'id a partir de l'urlsearch
 /**Récuperer get parameteres **/
 function getIdFromParam() {
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
+  const queryString = window.location.search; // récuperer l'url depuis la page
+  const urlParams = new URLSearchParams(queryString); // construire
   return urlParams.get("id");
 }
 
@@ -33,12 +33,12 @@ function injectProduit(kanape) {
 
 function afficherProduit() {
   const id = getIdFromParam();
-  // si l'id n'et dans URLSearchParams on annule et  on sort
+  // si l'id n'est pas dans URLSearchParams on annule et  on sort
   if (!id) {
     console.log("no id found in parameters");
     return;
   }
-
+  //on récupere le produit depuis l' API
   const myHeaders = new Headers();
   const init = {
     method: "GET",
@@ -53,10 +53,16 @@ function afficherProduit() {
   card.addEventListener("click", (e) => {
     const qty = inputQuantite.value;
     const valeurCouleur = colors.value;
+    ///choisir une quantité et une couleur
+    if (qty == 0 || !valeurCouleur) {
+      alert("veuillez définir la quantité  et la couleur");
+      return;
+    }
     //on récupère  le panier depuis localStorage
     res = localStorage.panier;
     //si le panier est encore vide on initialise la var panier par un tableau vide  (ternary operator)
     let panier = JSON.parse(res ? res : "[]");
+    //chercher un element à l'aide de la méthode find du tableau
     let articleTrouve = panier.find(
       (a) => a.produit._id == product._id && a.couleur == valeurCouleur
     );
@@ -72,11 +78,7 @@ function afficherProduit() {
       //sinon on modifie l'article existant en ajoutant la quantité saisie
       articleTrouve.quantite += parseInt(qty);
     }
-    ///choisir une quantité et une couleur
-    if (qty == 0 || !valeurCouleur) {
-      alert("veuillez définir la quantité  et la couleur");
-      return;
-    }
+
     //Enregistrer le panier dans localStroage
     localStorage.panier = JSON.stringify(panier);
     // on se redirige vers la page d'accueil

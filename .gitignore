@@ -1,3 +1,4 @@
 front/.DS_Store
 .vscode
 .DS_Store
+**/node_modules
